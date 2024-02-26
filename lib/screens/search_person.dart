@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:final_project_research/models/expertise.dart';
 import 'package:final_project_research/screens/result_search_p.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +13,27 @@ class MySearchPage extends StatefulWidget {
 
 class SearchPerson extends State<MySearchPage> {
   TextEditingController _searchController = TextEditingController();
+  String? item = 'มหาวิทยาลัยศิลปากร';
+  List items = [
+    'มหาวิทยาลัยศิลปากร',
+    'ตัวเลือก 2',
+    'ตัวเลือก 3',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('SearchPerson'),
-          // เพิ่มปุ่ม "Back" ที่สามารถกดได้
+          backgroundColor: Colors.indigo,
+          title: Text('ค้นหานักวิจัย',style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.white)),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,color: Colors.white),
             onPressed: () {
-              // Navigate back to the previous screen
               Navigator.pop(context);
             },
           ),
@@ -42,7 +54,7 @@ class SearchPerson extends State<MySearchPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('Name and Lastname',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                  child: Text('ชื่อ - นามสกุล',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -69,13 +81,12 @@ class SearchPerson extends State<MySearchPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('Name and Lastname',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                  child: Text('test',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                   child: TextField(
                     style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
-                    controller: _searchController,
                     decoration: InputDecoration(
 
                       filled: true,
@@ -95,14 +106,10 @@ class SearchPerson extends State<MySearchPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('Name and Lastname',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
-                ),
-                Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                   child: TextField(
                     style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
-                    controller: _searchController,
+
                     decoration: InputDecoration(
 
                       filled: true,
@@ -122,20 +129,36 @@ class SearchPerson extends State<MySearchPage> {
                   ),
                 ),
                 SizedBox(height: 16.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.indigo),
-                  onPressed: () {
-                    // Perform search based on _searchController.text
-                    String searchText = _searchController.text;
-                    // Add your search logic here
-                    // For now, print the search text
-                    debugPrint('Searching for: $searchText');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ResultSearchP()),
-                    );
-                  },
-                  child: Text('Search',style: TextStyle(color: Colors.white),),
+                DropdownButton(
+                    value: item,
+                    items: items.map((item) => DropdownMenuItem(value: item ,child: Text(item))).toList(),
+                    onChanged: (value) => setState(() => item = value.toString()),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.indigo),
+                        onPressed: () {
+                          // Perform search based on _searchController.text
+                          String searchText = _searchController.text;
+                          String? selectedValue = item;
+                          // Add your search logic here
+                          // For now, print the search text
+                          debugPrint('Searching for: $searchText');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ResultSearchP(),
+                              settings: RouteSettings(arguments: _searchController.text),
+                            ),
+                          );
+                        },
+                        child: Text('ค้นหา',style: TextStyle(color: Colors.white),),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
