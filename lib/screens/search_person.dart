@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:final_project_research/models/expertise.dart';
 import 'package:final_project_research/screens/result_search_p.dart';
@@ -16,8 +18,60 @@ class SearchPerson extends State<MySearchPage> {
   String? item = 'มหาวิทยาลัยศิลปากร';
   List items = [
     'มหาวิทยาลัยศิลปากร',
-    'ตัวเลือก 2',
-    'ตัวเลือก 3',
+    'Data Mining',
+    'Machine Learning',
+    'Distributed Database',
+    'Data Warehouse',
+    'Decision Support System',
+    'Knowledge Engineering',
+    'Computer Networks',
+    'Distributed Systems',
+    'Ubiquitous and Mobile Computing',
+    'Image Processing',
+    'Computer Vision',
+    'Augmented/Virtual Reality',
+    'Human Computer Interaction',
+    'Game Design and Development',
+    'Ubiquitous Computing',
+    'Software Engineering',
+    'Robotics',
+    'Wireless Communication',
+    'Evolutionary Algorithms',
+    'Metaheuristics',
+    'Optimization',
+    'Artificial Intelligence',
+    'Natural Language Processing',
+    'Deep Learning',
+    'DevOps',
+    'Network Security',
+    'Case-Base Reasoning for Design Patterns Retrieval',
+    'Case-Base Reasoning',
+    'Information Retrieval',
+    'Computer Network Architectures',
+    'Algorithms and Protocols',
+    'Database Application and Design',
+    'Data Warehouse and Application',
+    'Enterprise Application Programing and Design',
+    'System Analysis and Design',
+    'Knowledge and Information Engineering',
+    'KM',
+    'Visualization',
+    'Pattern Recognition',
+    'Cognitive',
+    'Emotional Analysis and Behaviour',
+    'Data Analysis',
+    'Computer Aided Diagnosis',
+    'Multimedia Retrieval',
+    'Web/Internet Technology',
+    'Web Programming / Technology',
+    'Business Intelligence',
+    'Multimedia Content Analysis',
+    'Data Analytics',
+    'Speech Processing',
+    'Digital System Design',
+    'Memory Architecture',
+    'Embedded System',
+    'Microarchitecture Design Techniques',
   ];
 
   @override
@@ -148,10 +202,11 @@ class SearchPerson extends State<MySearchPage> {
                           // Add your search logic here
                           // For now, print the search text
                           debugPrint('Searching for: $searchText');
+                          debugPrint('Searching for: $selectedValue');
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => ResultSearchP(),
-                              settings: RouteSettings(arguments: _searchController.text),
+                              settings: RouteSettings(arguments: json.encode({'searchText': searchText, 'selectedValue': selectedValue})),
                             ),
                           );
                         },

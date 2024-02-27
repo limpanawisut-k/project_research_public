@@ -5,16 +5,20 @@ class Person {
   final String email;
   final String website;
   final String authorUrl;
+  final String office;
+  final String province;
+  final String country;
   final String pic_name;
-  /*final String name_en;
-  final String degree_sum;
-  final String expertise;
-  final String email;
-  final String website;*/
 
-  Person({required this.id ,required this.full_name, required this.name_th, required this.authorUrl,  required this.pic_name
+  Person({required this.id ,required this.full_name, required this.name_th
     ,  required this.email
-    ,  required this.website});
+    ,  required this.website
+    ,  required this.authorUrl
+    ,  required this.office
+    ,  required this.province
+    ,  required this.country
+    ,  required this.pic_name
+    });
 
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
@@ -24,10 +28,10 @@ class Person {
       email: json['n']['email'] ?? 'ไม่มีข้อมูล' ,
       website: json['n']['website'] ?? 'ไม่มีข้อมูล' ,
       authorUrl: json['n']['authorUrl'] ?? 'ไม่มีข้อมูล',
+      office: json['n']['office'] ?? 'ไม่มีข้อมูล',
+      province: json['n']['province'] ?? 'ไม่มีข้อมูล',
+      country: json['n']['country'] ?? 'ไม่มีข้อมูล',
       pic_name: json['n']['pic_name'] ?? 'ไม่มีข้อมูล',
-      /*degree_sum: json['n']['degree_sum'] ?? 'ไม่มีข้อมูล',
-      expertise: json['n']['expertise'] ?? 'ไม่มีข้อมูล',
-      email: json['n']['email'] ?? 'ไม่มีข้อมูล',
-      website: json['n']['website'] ?? 'ไม่มีข้อมูล',*/);
+      );
   }
 }

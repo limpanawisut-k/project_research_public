@@ -23,8 +23,9 @@ class _ResultSearchP extends State<ResultSearchP> {
   final _dio = Dio(BaseOptions(responseType: ResponseType.plain));
   Map<String, dynamic>? list;
 
-  Future<List<Person>> fetchData(String search) async {
-    final response = await Dio().get('http://10.0.2.2:8000/search/$search');
+  Future<List<Person>> fetchData(String search , String office) async {
+    final response = await Dio().get('http://10.0.2.2:8000/search/filter',
+      queryParameters: {'search': search,'office': office},);
     debugPrint(response.data.toString());
 
     if (response.statusCode == 200) {
@@ -43,6 +44,10 @@ class _ResultSearchP extends State<ResultSearchP> {
   @override
   Widget build(BuildContext context) {
     final String dataForSearchPerson = ModalRoute.of(context)!.settings.arguments as String;
+    final Map<String, dynamic> arguments = json.decode(dataForSearchPerson) as Map<String, dynamic>;
+    String searchText = arguments['searchText'];
+    String selectedValue = arguments['selectedValue'];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
@@ -57,9 +62,8 @@ class _ResultSearchP extends State<ResultSearchP> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          
           FutureBuilder<List<Person>>(
-            future: fetchData(dataForSearchPerson),
+            future: fetchData(searchText,selectedValue),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Align(
@@ -112,6 +116,10 @@ class _ResultSearchP extends State<ResultSearchP> {
                                   ),
                                   Text(
                                     person[index].name_th,
+                                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                  ),
+                                  Text(
+                                    "${person[index].office} ${person[index].province}",
                                     style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
                                   ),
                                 ],
