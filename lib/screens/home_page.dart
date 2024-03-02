@@ -1,4 +1,5 @@
 import 'package:final_project_research/screens/search_person.dart';
+import 'package:final_project_research/screens/search_research.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -65,6 +66,10 @@ class MyHomePage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // กระทำที่คุณต้องการเมื่อปุ่มบนถูกกด
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SearchResearchPage()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.all(20.0),

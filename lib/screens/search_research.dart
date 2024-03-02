@@ -2,27 +2,22 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:final_project_research/models/expertise.dart';
-import 'package:final_project_research/screens/result_search_p.dart';
+import 'package:final_project_research/screens/result_search_r.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MySearchPage extends StatefulWidget {
+class SearchResearchPage extends StatefulWidget {
   @override
-  SearchPerson createState() => SearchPerson();
+  SearchResearch createState() => SearchResearch();
 }
 
-class SearchPerson extends State<MySearchPage> {
+class SearchResearch extends State<SearchResearchPage> {
   TextEditingController _searchController = TextEditingController();
-  String? officevalue = '---เลือกหน่วยงานหรือสังกัด---';
-  List officeitems = [
-    '---เลือกหน่วยงานหรือสังกัด---',
+  String? item = 'มหาวิทยาลัยศิลปากร';
+  List items = [
     'มหาวิทยาลัยศิลปากร',
-  ];
-  String? expertisevalue = '---เลือกสาขาความเชี่ยวชาญ---';
-  List expertiseitems = [
-    '---เลือกสาขาความเชี่ยวชาญ---',
     'Data Mining',
     'Machine Learning',
     'Distributed Database',
@@ -89,7 +84,7 @@ class SearchPerson extends State<MySearchPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.indigo,
-          title: Text('ค้นหานักวิจัย',style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.white)),
+          title: Text('ค้นหางานวิจัย',style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.white)),
           leading: IconButton(
             icon: Icon(Icons.arrow_back,color: Colors.white),
             onPressed: () {
@@ -113,7 +108,7 @@ class SearchPerson extends State<MySearchPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('ชื่อ - นามสกุล',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                  child: Text('ชื่องานวิจัย',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -121,11 +116,12 @@ class SearchPerson extends State<MySearchPage> {
                     style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
                     controller: _searchController,
                     decoration: InputDecoration(
+
                       filled: true,
-                      fillColor: Colors.white, // สีพื้นหลัง
+                      fillColor: Colors.grey[200], // สีพื้นหลัง
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                        color: Colors.black, // สีขอบเมื่อไม่ได้รับภายนอก
+                          color: Colors.black, // สีขอบเมื่อไม่ได้รับภายนอก
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -133,50 +129,64 @@ class SearchPerson extends State<MySearchPage> {
                           color: Colors.indigo, // สีขอบเมื่อได้รับภายนอก
                         ),
                       ),
-                  ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('สาขาความเชี่ยวชาญ',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1)
-                    ),
-                    child: DropdownButton(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                      isExpanded: true,
-                      value: expertisevalue,
-                      items: expertiseitems.map((item) => DropdownMenuItem(value: item ,child: Text(item))).toList(),
-                      onChanged: (value) => setState(() => expertisevalue = value.toString()),
-                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('หน่วยงานหรือสังกัด',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                  child: Text('test',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1)
-                    ),
-                    child: DropdownButton(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                      isExpanded: true,
-                      value: officevalue,
-                      items: officeitems.map((item) => DropdownMenuItem(value: item ,child: Text(item))).toList(),
-                      onChanged: (value) => setState(() => officevalue = value.toString()),
-                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                  child: TextField(
+                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
+                    decoration: InputDecoration(
+
+                      filled: true,
+                      fillColor: Colors.grey[200], // สีพื้นหลัง
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black, // สีขอบเมื่อไม่ได้รับภายนอก
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.indigo, // สีขอบเมื่อได้รับภายนอก
+                        ),
+                      ),
+
                     ),
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: TextField(
+                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
+
+                    decoration: InputDecoration(
+
+                      filled: true,
+                      fillColor: Colors.grey[200], // สีพื้นหลัง
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black, // สีขอบเมื่อไม่ได้รับภายนอก
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.indigo, // สีขอบเมื่อได้รับภายนอก
+                        ),
+                      ),
+
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                DropdownButton(
+                  value: item,
+                  items: items.map((item) => DropdownMenuItem(value: item ,child: Text(item))).toList(),
+                  onChanged: (value) => setState(() => item = value.toString()),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -188,19 +198,15 @@ class SearchPerson extends State<MySearchPage> {
                         onPressed: () {
                           // Perform search based on _searchController.text
                           String searchText = _searchController.text;
-                          String? officeValue = officevalue;
-                          String? expertiseValue = expertisevalue;
+                          String? selectedValue = item;
                           // Add your search logic here
                           // For now, print the search text
                           debugPrint('Searching for: $searchText');
-                          debugPrint('Searching for: $officeValue');
-                          debugPrint('Searching for: $expertiseValue');
+                          debugPrint('Searching for: $selectedValue');
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ResultSearchP(),
-                              settings: RouteSettings(arguments: json.encode({'searchText': searchText,
-                                'officeValue': officeValue,
-                                'expertiseValue': expertiseValue,})),
+                            MaterialPageRoute(builder: (context) => ResultSearchR(),
+                              settings: RouteSettings(arguments: json.encode({'searchText': searchText})),
                             ),
                           );
                         },
