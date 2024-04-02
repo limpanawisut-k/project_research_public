@@ -4,16 +4,14 @@ import 'package:final_project_research/models/persons.dart';
 import 'package:final_project_research/models/todo_item.dart';
 import 'package:final_project_research/screens/detail_person.dart';
 import 'package:final_project_research/screens/search_person.dart';
+import 'package:final_project_research/screens/search_research.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class ResultSearchP extends StatefulWidget {
-
-  const ResultSearchP({super.key});
-
+  const ResultSearchP({Key? key}) : super(key: key);
 
   @override
   State<ResultSearchP> createState() => _ResultSearchP();
@@ -23,7 +21,7 @@ class _ResultSearchP extends State<ResultSearchP> {
   final _dio = Dio(BaseOptions(responseType: ResponseType.plain));
   Map<String, dynamic>? list;
 
-  Future<List<Person>> fetchData(String search , String office, String expertise) async {
+  Future<List<Person>> fetchData(String search, String office, String expertise) async {
     final response = await Dio().get('http://10.0.2.2:8000/search/filter',
       queryParameters: {'search': search,'office': office, 'expertise': expertise},);
     debugPrint(response.data.toString());
@@ -37,11 +35,6 @@ class _ResultSearchP extends State<ResultSearchP> {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-  }
-  @override
   Widget build(BuildContext context) {
     final String dataForSearchPerson = ModalRoute.of(context)!.settings.arguments as String;
     final Map<String, dynamic> arguments = json.decode(dataForSearchPerson) as Map<String, dynamic>;
@@ -52,9 +45,9 @@ class _ResultSearchP extends State<ResultSearchP> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
-        title: Text('ผลการค้นหา',style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.white)),
+        title: Text('ผลการค้นหา', style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.white)),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -64,7 +57,7 @@ class _ResultSearchP extends State<ResultSearchP> {
       body: Stack(
         children: [
           FutureBuilder<List<Person>>(
-            future: fetchData(searchText,officeValue,expertiseValue),
+            future: fetchData(searchText, officeValue, expertiseValue),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Align(
@@ -92,16 +85,16 @@ class _ResultSearchP extends State<ResultSearchP> {
                               children: [
                                 if (person[index].pic_name == "ไม่มีข้อมูล")
                                   CircleAvatar(
-                                    radius: 40, // ขนาดของวงกลม
+                                    radius: 40,
                                     child: Icon(
                                       Icons.person,
-                                      color: Colors.white, // สีไอคอน
-                                      size: 40, // ขนาดไอคอน
+                                      color: Colors.white,
+                                      size: 40,
                                     ),
                                   )
                                 else
                                   CircleAvatar(
-                                    radius: 40, // ขนาดของวงกลม
+                                    radius: 40,
                                     backgroundImage: NetworkImage(person[index].pic_name),
                                   ),
                               ],
@@ -130,9 +123,9 @@ class _ResultSearchP extends State<ResultSearchP> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Icon(
-                                  Icons.search, // ใช้ไอคอน search สำหรับแสดงเป็นแว่นขยาย
-                                  size: 30.0, // ขนาดของไอคอน
-                                  color: Colors.black, // สีของไอคอน
+                                  Icons.search,
+                                  size: 30.0,
+                                  color: Colors.black,
                                 )
                               ],
                             ),
@@ -148,10 +141,31 @@ class _ResultSearchP extends State<ResultSearchP> {
               }
             },
           ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MySearchPage()), // SecondScreen() คือหน้าที่คุณต้องการจะไป
+                    );// ใส่โค้ดที่ต้องการให้ปุ่มทำงาน
+                  },
+                  child: Text('Button 1'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // ใส่โค้ดที่ต้องการให้ปุ่มทำงาน
+                  },
+                  child: Text('Button 2'),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
-
   }
-
 }

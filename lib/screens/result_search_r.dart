@@ -25,9 +25,9 @@ class _ResultSearchR extends State<ResultSearchR> {
   final _dio = Dio(BaseOptions(responseType: ResponseType.plain));
   Map<String, dynamic>? list;
 
-  Future<List<Research>> fetchData(String search) async {
+  Future<List<Research>> fetchData(String search,String searchfromperson,String type,String publisher,String year) async {
     final response = await Dio().get('http://10.0.2.2:8000/search/research',
-      queryParameters: {'search': search},);
+      queryParameters: {'search': search,'searchfromperson': searchfromperson, 'type': type, 'publisher': publisher, 'year': year},);
     debugPrint(response.data.toString());
 
     if (response.statusCode == 200) {
@@ -48,7 +48,12 @@ class _ResultSearchR extends State<ResultSearchR> {
     final String dataForSearchPerson = ModalRoute.of(context)!.settings.arguments as String;
     final Map<String, dynamic> arguments = json.decode(dataForSearchPerson) as Map<String, dynamic>;
     String searchText = arguments['searchText'];
-    //String selectedValue = arguments['selectedValue'];
+    String searchFromPerson = arguments['searchFromPerson'];
+    String typeValue = arguments['typeValue'];
+    String publisherValue = arguments['publisherValue'];
+    String yearValue = arguments['yearValue'];
+
+    debugPrint('Personfrom: $searchFromPerson');
 
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +70,7 @@ class _ResultSearchR extends State<ResultSearchR> {
       body: Stack(
         children: [
           FutureBuilder<List<Research>>(
-            future: fetchData(searchText),
+            future: fetchData(searchText,searchFromPerson,typeValue,publisherValue,yearValue),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Align(

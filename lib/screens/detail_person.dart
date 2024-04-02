@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:final_project_research/models/degree.dart';
 import 'package:final_project_research/models/expertise.dart';
 import 'package:final_project_research/models/persons.dart';
+import 'package:final_project_research/screens/result_search_r.dart';
 import 'package:final_project_research/screens/search_person.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,19 +74,117 @@ class _ResultExpertise extends State<DetailPerson> {
         resizeToAvoidBottomInset: false,
         body: Stack(
             children: [
-              Container(
+              /*Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('assets/pictures/bg_app.jpg'),
                       fit: BoxFit.fitWidth,
                       alignment: Alignment.bottomCenter),
                 ),
-              ),
+              ),*/
               SingleChildScrollView(
                 child: Column(
                   children: [
                     SizedBox(height: 20,),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (person.pic_name == "ไม่มีข้อมูล")
+                                      CircleAvatar(
+                                        radius: 60, // ขนาดของวงกลม
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.white, // สีไอคอน
+                                          size: 40, // ขนาดไอคอน
+                                        ),
+                                      )
+                                    else
+                                      CircleAvatar(
+                                        radius: 60, // ขนาดของวงกลม
+                                        backgroundImage: NetworkImage(person.pic_name),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "${person.full_name}",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 18, color: Colors.indigo),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "${person.name_th}",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 18, color: Colors.black),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(16, 16, 0, 0),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.indigo,
+                                      fixedSize: Size(150, 50)
+                                  ),
+                                  onPressed: () {
+                                    String searchText = '';
+                                    String searchFromPerson = "${person.full_name}";
+                                    String? typeValue = '---เลือกประเภทงานวิจัย---';
+                                    String? publisherValue = '---เลือกแหล่งที่เผยแพร่---';
+                                    String? yearValue = '---เลือกปีที่จัดทำ---';
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ResultSearchR(),
+                                        settings: RouteSettings(
+                                          arguments: json.encode({
+                                            'searchText': searchText,
+                                            'searchFromPerson': searchFromPerson,
+                                            'typeValue': typeValue,
+                                            'publisherValue': publisherValue,
+                                            'yearValue': yearValue,
+                                          }),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                                    child: Text(
+                                      'งานวิจัยที่เกี่ยวข้อง',
+                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.white,),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    /*Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (person.pic_name == "ไม่มีข้อมูล")
@@ -101,9 +202,9 @@ class _ResultExpertise extends State<DetailPerson> {
                             backgroundImage: NetworkImage(person.pic_name),
                           ),
                       ],
-                    ),
+                    ),*/
                     SizedBox(height: 20,),
-                    Row(
+                    /*Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
@@ -111,8 +212,8 @@ class _ResultExpertise extends State<DetailPerson> {
                           style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
                         ),
                       ],
-                    ),
-                    Row(
+                    ),*/
+                    /*Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
@@ -120,7 +221,8 @@ class _ResultExpertise extends State<DetailPerson> {
                           style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
                         ),
                       ],
-                    ),
+                    ),*/
+                    SizedBox(height: 20,),
                     Row(
                       children: [
                         Expanded(
@@ -128,9 +230,12 @@ class _ResultExpertise extends State<DetailPerson> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "E-mail :",
-                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "E-mail :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
                               ),
                             ],
                           ),
@@ -150,6 +255,7 @@ class _ResultExpertise extends State<DetailPerson> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 8,),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -158,9 +264,12 @@ class _ResultExpertise extends State<DetailPerson> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Website :",
-                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "Website :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
                               ),
                             ],
                           ),
@@ -180,6 +289,7 @@ class _ResultExpertise extends State<DetailPerson> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 8,),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -189,9 +299,12 @@ class _ResultExpertise extends State<DetailPerson> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                "IEEE Url :",
-                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "IEEE Url :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
                               ),
                             ],
                           ),
@@ -211,6 +324,7 @@ class _ResultExpertise extends State<DetailPerson> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 8,),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -220,9 +334,12 @@ class _ResultExpertise extends State<DetailPerson> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                "วุฒิการศึกษา :",
-                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "วุฒิการศึกษา :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
                               ),
                             ],
                           ),
@@ -251,15 +368,26 @@ class _ResultExpertise extends State<DetailPerson> {
                                   } else {
                                     List<Degree> degree = snapshot.data!;
                                     return ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: degree.length,
                                       itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
-                                          child: Text(
-                                            degree[index].degree_name,
-                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
-                                          ),
+                                        return Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
+                                              child: Text(
+                                                degree[index].degree_name,
+                                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                              ),
+                                            ),
+                                            Divider( // เส้นแบ่งระหว่างรายการ
+                                              color: Colors.grey, // สีของเส้น
+                                              thickness: 1, // ความหนาของเส้น
+                                              indent: 0, // ระยะห่างด้านซ้ายของเส้น
+                                              endIndent: 4, // ระยะห่างด้านขวาของเส้น
+                                            ),
+                                          ],
                                         );
 
                                       },
@@ -272,6 +400,7 @@ class _ResultExpertise extends State<DetailPerson> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 8,),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -281,9 +410,12 @@ class _ResultExpertise extends State<DetailPerson> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                "สาขาความเชี่ยวชาญ :",
-                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "สาขาความเชี่ยวชาญ :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
                               ),
                             ],
                           ),
@@ -312,15 +444,27 @@ class _ResultExpertise extends State<DetailPerson> {
                                   } else {
                                     List<Expertise> expertise = snapshot.data!;
                                     return ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: expertise.length,
                                       itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
-                                          child: Text(
-                                            expertise[index].expertise_name,
-                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
-                                          ),
+                                        return Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
+                                              child: Text(
+                                                expertise[index].expertise_name,
+                                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                              ),
+                                            ),
+                                            Divider( // เส้นแบ่งระหว่างรายการ
+                                              color: Colors.grey, // สีของเส้น
+                                              thickness: 1, // ความหนาของเส้น
+                                              indent: 0, // ระยะห่างด้านซ้ายของเส้น
+                                              endIndent: 4, // ระยะห่างด้านขวาของเส้น
+                                            ),
+                                          ],
                                         );
 
                                       },

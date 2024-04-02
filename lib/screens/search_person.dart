@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class MySearchPage extends StatefulWidget {
   @override
@@ -121,6 +122,7 @@ class SearchPerson extends State<MySearchPage> {
                     style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
                     controller: _searchController,
                     decoration: InputDecoration(
+                      hintText: 'ป้อนชื่อ - นามสกุล',
                       filled: true,
                       fillColor: Colors.white, // สีพื้นหลัง
                       enabledBorder: OutlineInputBorder(
@@ -137,6 +139,10 @@ class SearchPerson extends State<MySearchPage> {
                   ),
                 ),
                 Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 4, 16, 8),
+                  child: Text('* รองรับทั้งภาษาไทยและภาษาอังกฤษ',style: GoogleFonts.getFont('Prompt', fontSize: 14, color: Colors.red,),),
+                ),
+                Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Text('สาขาความเชี่ยวชาญ',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
@@ -145,10 +151,12 @@ class SearchPerson extends State<MySearchPage> {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1)
+                        border: Border.all(width: 1),
+                        color: Colors.white,
                     ),
                     child: DropdownButton(
                       padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      underline: SizedBox(),
                       isExpanded: true,
                       value: expertisevalue,
                       items: expertiseitems.map((item) => DropdownMenuItem(value: item ,child: Text(item))).toList(),
@@ -166,10 +174,12 @@ class SearchPerson extends State<MySearchPage> {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1)
+                        border: Border.all(width: 1),
+                        color: Colors.white,
                     ),
                     child: DropdownButton(
                       padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      underline: SizedBox(),
                       isExpanded: true,
                       value: officevalue,
                       items: officeitems.map((item) => DropdownMenuItem(value: item ,child: Text(item))).toList(),
@@ -179,32 +189,69 @@ class SearchPerson extends State<MySearchPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.indigo),
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.indigo,
+                            fixedSize: Size(150, 50)
+                        ),
                         onPressed: () {
-                          // Perform search based on _searchController.text
                           String searchText = _searchController.text;
                           String? officeValue = officevalue;
                           String? expertiseValue = expertisevalue;
-                          // Add your search logic here
-                          // For now, print the search text
-                          debugPrint('Searching for: $searchText');
-                          debugPrint('Searching for: $officeValue');
-                          debugPrint('Searching for: $expertiseValue');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ResultSearchP(),
-                              settings: RouteSettings(arguments: json.encode({'searchText': searchText,
-                                'officeValue': officeValue,
-                                'expertiseValue': expertiseValue,})),
-                            ),
-                          );
+
+                          // เช็คว่าชื่อ-นามสกุลมีตัวอักษรพิเศษหรือไม่
+                          if (_searchController.text.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('ข้อผิดพลาด',style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.red)),
+                                  content: Container(
+                                    height: 60,
+                                      child: Text('ชื่อและนามสกุลไม่ควรมีอักษรพิเศษ',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black))
+                                  ),
+                                  actions: [
+                                    OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        backgroundColor: Colors.indigo,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('ตกลง',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.white)),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            // ให้ทำการค้นหา
+                            debugPrint('Searching for: $searchText');
+                            debugPrint('Searching for: $officeValue');
+                            debugPrint('Searching for: $expertiseValue');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ResultSearchP(),
+                                settings: RouteSettings(
+                                  arguments: json.encode({
+                                    'searchText': searchText,
+                                    'officeValue': officeValue,
+                                    'expertiseValue': expertiseValue,
+                                  }),
+                                ),
+                              ),
+                            );
+                          }
                         },
-                        child: Text('ค้นหา',style: TextStyle(color: Colors.white),),
+                        child: Text(
+                          'ค้นหา',
+                          style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
