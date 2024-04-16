@@ -103,14 +103,53 @@ class _ResultSearchR extends State<ResultSearchR> {
                                     research[index].title,
                                     style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
                                   ),
-                                  Text(
-                                    research[index].publisher,
-                                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                  SizedBox(height: 10,),
+                                  Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                            research[index].publisher,
+                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                          ),
+                                          Text(
+                                            research[index].publication_year,
+                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(width: 20,),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              if (research[index].content_type == "Journals")
+                                                CircleAvatar(
+                                                  radius: 20,
+                                                  backgroundImage: AssetImage('assets/pictures/journal_icon.png'),
+                                                )
+                                              else
+                                                CircleAvatar(
+                                                  radius: 20,
+                                                  backgroundImage: AssetImage('assets/pictures/conference_icon.png'),
+                                                ),
+                                            ],
+                                          ),
+                                          SizedBox(width: 10,),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                research[index].content_type,
+                                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    research[index].publication_year,
-                                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
-                                  ),
+
                                 ],
                               ),
                             ),

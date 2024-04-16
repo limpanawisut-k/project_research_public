@@ -122,7 +122,7 @@ class SearchPerson extends State<MySearchPage> {
                     style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
                     controller: _searchController,
                     decoration: InputDecoration(
-                      hintText: 'ป้อนชื่อ - นามสกุล',
+                      hintText: 'รองรับทั้งภาษาไทยและภาษาอังกฤษ',
                       filled: true,
                       fillColor: Colors.white, // สีพื้นหลัง
                       enabledBorder: OutlineInputBorder(
@@ -140,7 +140,7 @@ class SearchPerson extends State<MySearchPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(24, 4, 16, 8),
-                  child: Text('* รองรับทั้งภาษาไทยและภาษาอังกฤษ',style: GoogleFonts.getFont('Prompt', fontSize: 14, color: Colors.red,),),
+                  child: Text('* ไม่รองรับตัวอักษรพิเศษ',style: GoogleFonts.getFont('Prompt', fontSize: 14, color: Colors.red,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),

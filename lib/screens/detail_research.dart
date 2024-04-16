@@ -1,13 +1,18 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:final_project_research/models/degree.dart';
 import 'package:final_project_research/models/expertise.dart';
 import 'package:final_project_research/models/persons.dart';
 import 'package:final_project_research/models/research.dart';
+import 'package:final_project_research/screens/result_search_from_title.dart';
 import 'package:final_project_research/screens/search_person.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailResearch extends StatefulWidget {
   final Research research;
@@ -54,14 +59,14 @@ class _ResultDetail extends State<DetailResearch> {
         resizeToAvoidBottomInset: false,
         body: Stack(
             children: [
-              Container(
+              /*Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('assets/pictures/bg_app.jpg'),
                       fit: BoxFit.fitWidth,
                       alignment: Alignment.bottomCenter),
                 ),
-              ),
+              ),*/
               SingleChildScrollView(
                 child: Column(
                   children: [
@@ -70,13 +75,13 @@ class _ResultDetail extends State<DetailResearch> {
                       alignment: WrapAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                           child: Text(
                             research.title,
-                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                            style: GoogleFonts.getFont('Prompt', fontSize: 18, color: Colors.indigo),
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
+                            maxLines: 4,
                           ),
                         ),
                       ],
@@ -85,7 +90,7 @@ class _ResultDetail extends State<DetailResearch> {
                       alignment: WrapAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                           child: Text(
                             research.publication_title,
                             style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
@@ -94,15 +99,203 @@ class _ResultDetail extends State<DetailResearch> {
                       ],
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.fromLTRB(16, 0, 0,32),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.indigo,
+                                fixedSize: Size(150, 50)
+                            ),
+                            onPressed: () {
+                              String searchFromTitle = "${research.title}";
+                              debugPrint('Searching for: $searchFromTitle');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ResultSearchTitle(),
+                                  settings: RouteSettings(
+                                    arguments: json.encode({
+                                      'searchFromTitle': searchFromTitle,
+                                    }),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                              child: Text(
+                                'นักวิจัยที่เกี่ยวข้อง',
+                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.white,),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "Abstract URL :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                    onTap: () {
+                                      _launchURL(research.abstract_url); // เรียกใช้งานฟังก์ชั่นเมื่อคลิกที่ Hyperlink Text
+                                    },
+                                    child: Text.rich(
+                                      TextSpan(
+                                        text: "${research.abstract_url}",
+                                        style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.blue),
+                                        recognizer: TapGestureRecognizer()..onTap = () {
+                                          _launchURL(research.abstract_url);
+                                        },
+                                      ),
+                                      textAlign: TextAlign.start,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "เลขงานวิจัย :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${research.article_number}",
+                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8,),
+                    Row(
                       children: [
                         Expanded(
                           flex: 1,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "แหล่งที่เผยแพร่ :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Text(
-                                "ปี :",
+                                "${research.publisher}",
                                 style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "ประเภทงานวิจัย :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${research.content_type}",
+                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "ปีที่เผยแพร่ :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
                               ),
                             ],
                           ),
@@ -122,6 +315,88 @@ class _ResultDetail extends State<DetailResearch> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 8,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "doi :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Wrap(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
+                                    child: Text(
+                                      "${research.doi}",
+                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                      textAlign: TextAlign.start,
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 4,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "หมายเลขหน้า :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${research.start_page} - ${research.end_page}",
+                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+
                     /*Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -315,4 +590,13 @@ class _ResultDetail extends State<DetailResearch> {
 
             ]));
   }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url'; // โปรดระวังเปิด URL ไม่ได้
+    }
+  }
+
 }

@@ -123,7 +123,7 @@ class SearchResearch extends State<SearchResearchPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('ประเภทงานวิจัย',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                  child: Text('แหล่งที่เผยแพร่',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -146,7 +146,7 @@ class SearchResearch extends State<SearchResearchPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('แหล่งที่เผยแพร่',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                  child: Text('ประเภทงานวิจัย',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),

@@ -77,9 +77,10 @@ class _ResultExpertise extends State<DetailPerson> {
               /*Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/pictures/bg_app.jpg'),
+                      image: AssetImage('assets/pictures/bg_detail.png'),
                       fit: BoxFit.fitWidth,
-                      alignment: Alignment.bottomCenter),
+                      alignment: AlignmentDirectional.topCenter,
+                  ),
                 ),
               ),*/
               SingleChildScrollView(
