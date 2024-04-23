@@ -169,7 +169,7 @@ class SearchResearch extends State<SearchResearchPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('ปีที่จัดทำ',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                  child: Text('ปีที่เผยแพร่',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -208,7 +208,7 @@ class SearchResearch extends State<SearchResearchPage> {
                           String? yearValue = yearvalue;
 
                           // เช็คว่าชื่องานวิจัยมีตัวอักษรพิเศษหรือไม่
-                          if (searchText.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+                          if (searchText.contains(RegExp(r'[!@#$%^&*(),?":{}|<>]'))) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {

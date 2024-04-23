@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:final_project_research/models/degree.dart';
 import 'package:final_project_research/models/expertise.dart';
 import 'package:final_project_research/models/persons.dart';
+import 'package:final_project_research/screens/relation_author.dart';
 import 'package:final_project_research/screens/result_search_r.dart';
 import 'package:final_project_research/screens/search_person.dart';
 import 'package:flutter/cupertino.dart';
@@ -175,6 +176,47 @@ class _ResultExpertise extends State<DetailPerson> {
                                     padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                                     child: Text(
                                       'งานวิจัยที่เกี่ยวข้อง',
+                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.white,),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(16, 16, 0, 0),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.indigo,
+                                      fixedSize: Size(200, 50)
+                                  ),
+                                  onPressed: () {
+                                    String searchText = '';
+                                    String searchFromPerson = "${person.full_name}";
+                                    String? typeValue = '---เลือกประเภทงานวิจัย---';
+                                    String? publisherValue = '---เลือกแหล่งที่เผยแพร่---';
+                                    String? yearValue = '---เลือกปีที่จัดทำ---';
+                                    String nameAuthor = "${person.full_name}";
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => RelationAuthor(),
+                                        settings: RouteSettings(
+                                          arguments: json.encode({
+                                            'searchText': searchText,
+                                            'searchFromPerson': searchFromPerson,
+                                            'typeValue': typeValue,
+                                            'publisherValue': publisherValue,
+                                            'yearValue': yearValue,
+                                            'nameAuthor': nameAuthor,
+                                          }),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                                    child: Text(
+                                      'บุคคลที่มีความสัมพันธ์ร่วม',
                                       style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.white,),
                                     ),
                                   ),

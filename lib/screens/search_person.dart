@@ -204,7 +204,7 @@ class SearchPerson extends State<MySearchPage> {
                           String? expertiseValue = expertisevalue;
 
                           // เช็คว่าชื่อ-นามสกุลมีตัวอักษรพิเศษหรือไม่
-                          if (_searchController.text.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+                          if (_searchController.text.contains(RegExp(r'[!@#$%^&*(),?":{}|<>]'))) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
