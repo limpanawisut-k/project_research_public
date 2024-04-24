@@ -138,29 +138,6 @@ class _ResultSearchP extends State<ResultSearchP> {
               }
             },
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MySearchPage()), // SecondScreen() คือหน้าที่คุณต้องการจะไป
-                    );// ใส่โค้ดที่ต้องการให้ปุ่มทำงาน
-                  },
-                  child: Text('Button 1'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // ใส่โค้ดที่ต้องการให้ปุ่มทำงาน
-                  },
-                  child: Text('Button 2'),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
