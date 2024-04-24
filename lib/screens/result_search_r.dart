@@ -88,8 +88,9 @@ class _ResultSearchR extends State<ResultSearchR> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
+                        tileColor: Color.fromRGBO(240, 240, 240, 1),
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 2),
+                          /*side: BorderSide(width: 2),*/
                           borderRadius: BorderRadius.circular(20),
                         ),
                         title: Row(

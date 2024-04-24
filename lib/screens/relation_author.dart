@@ -58,6 +58,7 @@ class _RelationAuthorState extends State<RelationAuthor> {
 
   @override
   Widget build(BuildContext context) {
+    Set<String> uniqueNames = Set<String>();
     final String dataForSearchPerson = ModalRoute.of(context)!.settings.arguments as String;
     final Map<String, dynamic> arguments = json.decode(dataForSearchPerson) as Map<String, dynamic>;
     String searchText = arguments['searchText'];
@@ -72,7 +73,7 @@ class _RelationAuthorState extends State<RelationAuthor> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
-        title: Text('ผลการค้นหา', style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.white)),
+        title: Text('บุคคลที่มีความสัมพันธ์ร่วม', style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.white)),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
@@ -104,7 +105,8 @@ class _RelationAuthorState extends State<RelationAuthor> {
                       List<Person> persons = personSnapshot.data!;
                       return Column(
                         children: persons.map((person) {
-                          if (person.full_name != nameAuthor) {
+                          if (!uniqueNames.contains(person.full_name) && person.full_name != nameAuthor) {
+                            uniqueNames.add(person.full_name);
                             return FutureBuilder<List<Research>>(
                               future: fetchDataArticleRelation(nameAuthor, person.full_name),
                               builder: (context, articleSnapshot) {
@@ -117,6 +119,11 @@ class _RelationAuthorState extends State<RelationAuthor> {
                                   return Column(
                                     children: [
                                       ListTile(
+                                        tileColor: Color.fromRGBO(240, 240, 240, 1),
+                                        shape: RoundedRectangleBorder(
+                                          /*side: BorderSide(width: 1),*/
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
                                         title: Text(
                                           person.full_name,
                                           style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
@@ -127,6 +134,27 @@ class _RelationAuthorState extends State<RelationAuthor> {
                                       ),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'งานวิจัยที่ทำร่วมกัน',
+                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                          ),
+                                          Text(
+                                            'ชื่องานวิจัย 1',
+                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                          ),
+                                          Text(
+                                            'ชื่องานวิจัย 2',
+                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                          ),
+                                          Text(
+                                            'ชื่องานวิจัย 3',
+                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                      /*Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: articles.map((article) {
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -136,7 +164,7 @@ class _RelationAuthorState extends State<RelationAuthor> {
                                             ),
                                           );
                                         }).toList(),
-                                      ),
+                                      ),*/
                                       Divider(), // Add a divider between each person's articles
                                     ],
                                   );

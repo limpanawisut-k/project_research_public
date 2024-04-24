@@ -59,14 +59,13 @@ class _ResultDetail extends State<DetailResearch> {
         resizeToAvoidBottomInset: false,
         body: Stack(
             children: [
-              /*Container(
+              Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/pictures/bg_app.jpg'),
-                      fit: BoxFit.fitWidth,
+                      image: AssetImage('assets/pictures/bg_app2.png'),
                       alignment: Alignment.bottomCenter),
                 ),
-              ),*/
+              ),
               SingleChildScrollView(
                 child: Column(
                   children: [

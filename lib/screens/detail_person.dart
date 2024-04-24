@@ -78,10 +78,8 @@ class _ResultExpertise extends State<DetailPerson> {
               /*Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/pictures/bg_detail.png'),
-                      fit: BoxFit.fitWidth,
-                      alignment: AlignmentDirectional.topCenter,
-                  ),
+                      image: AssetImage('assets/pictures/bg_app2.png'),
+                      alignment: Alignment.bottomCenter),
                 ),
               ),*/
               SingleChildScrollView(
@@ -147,7 +145,7 @@ class _ResultExpertise extends State<DetailPerson> {
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.indigo,
-                                      fixedSize: Size(150, 50)
+                                      fixedSize: Size(200, 50)
                                   ),
                                   onPressed: () {
                                     String searchText = '';
@@ -276,7 +274,7 @@ class _ResultExpertise extends State<DetailPerson> {
                               Container(
                                 padding: EdgeInsets.only(left: 16),
                                 child: Text(
-                                  "E-mail :",
+                                  "อีเมล :",
                                   style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
                                 ),
                               ),
@@ -310,7 +308,7 @@ class _ResultExpertise extends State<DetailPerson> {
                               Container(
                                 padding: EdgeInsets.only(left: 16),
                                 child: Text(
-                                  "Website :",
+                                  "เว็บไซต์ :",
                                   style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
                                 ),
                               ),
@@ -456,7 +454,7 @@ class _ResultExpertise extends State<DetailPerson> {
                               Container(
                                 padding: EdgeInsets.only(left: 16),
                                 child: Text(
-                                  "สาขาความเชี่ยวชาญ :",
+                                  "สาขาที่เชี่ยวชาญ :",
                                   style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
                                 ),
                               ),
@@ -520,6 +518,109 @@ class _ResultExpertise extends State<DetailPerson> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 8,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "สำนักงาน :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${person.office}",
+                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "จังหวัด :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${person.province}",
+                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "ประเทศ :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${person.country}",
+                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8,),
 
 
                   ],

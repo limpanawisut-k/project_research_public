@@ -74,8 +74,9 @@ class _ResultSearchTitle extends State<ResultSearchTitle> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
+                        tileColor: Color.fromRGBO(240, 240, 240, 1),
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 2),
+                          /*side: BorderSide(width: 0),*/
                           borderRadius: BorderRadius.circular(20),
                         ),
                         title: Row(
@@ -85,11 +86,7 @@ class _ResultSearchTitle extends State<ResultSearchTitle> {
                                 if (person[index].pic_name == "ไม่มีข้อมูล")
                                   CircleAvatar(
                                     radius: 40,
-                                    child: Icon(
-                                      Icons.person,
-                                      color: Colors.white,
-                                      size: 40,
-                                    ),
+                                    backgroundImage: AssetImage('assets/pictures/person_icon.png'),
                                   )
                                 else
                                   CircleAvatar(

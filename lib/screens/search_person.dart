@@ -144,7 +144,7 @@ class SearchPerson extends State<MySearchPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('สาขาความเชี่ยวชาญ',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                  child: Text('สาขาที่เชี่ยวชาญ',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
