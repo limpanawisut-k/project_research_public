@@ -5,6 +5,7 @@ import 'package:final_project_research/models/degree.dart';
 import 'package:final_project_research/models/expertise.dart';
 import 'package:final_project_research/models/persons.dart';
 import 'package:final_project_research/models/research.dart';
+import 'package:final_project_research/screens/home_page.dart';
 import 'package:final_project_research/screens/result_search_from_title.dart';
 import 'package:final_project_research/screens/search_person.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,6 +56,17 @@ class _ResultDetail extends State<DetailResearch> {
               Navigator.pop(context);
             },
           ),
+          actions: [
+            IconButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                  settings: RouteSettings(),
+                ),
+              );
+            }, icon: Icon(Icons.home,color: Colors.white,size: 40,))
+          ],
         ),
         resizeToAvoidBottomInset: false,
         body: Stack(

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:final_project_research/models/expertise.dart';
+import 'package:final_project_research/screens/home_page.dart';
 import 'package:final_project_research/screens/result_search_p.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,19 @@ class MySearchPage extends StatefulWidget {
 }
 
 class SearchPerson extends State<MySearchPage> {
+  Future<List<String>> fetchAllExpertise() async {
+    final response = await Dio().get('http://10.0.2.2:8000/all_expertise');
+    debugPrint(response.data.toString());
+
+    if (response.statusCode == 200 ) {
+      List<dynamic> data = response.data;
+      List<String> expertiseNames = data.map((item) => Expertise.fromJson(item).expertise_name).toList();
+      return expertiseNames;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   TextEditingController _searchController = TextEditingController();
   String? officevalue = '---เลือกหน่วยงานหรือสังกัด---';
   List officeitems = [
@@ -24,65 +38,20 @@ class SearchPerson extends State<MySearchPage> {
   String? expertisevalue = '---เลือกสาขาความเชี่ยวชาญ---';
   List expertiseitems = [
     '---เลือกสาขาความเชี่ยวชาญ---',
-    'Data Mining',
-    'Machine Learning',
-    'Distributed Database',
-    'Data Warehouse',
-    'Decision Support System',
-    'Knowledge Engineering',
-    'Computer Networks',
-    'Distributed Systems',
-    'Ubiquitous and Mobile Computing',
-    'Image Processing',
-    'Computer Vision',
-    'Augmented/Virtual Reality',
-    'Human Computer Interaction',
-    'Game Design and Development',
-    'Ubiquitous Computing',
-    'Software Engineering',
-    'Robotics',
-    'Wireless Communication',
-    'Evolutionary Algorithms',
-    'Metaheuristics',
-    'Optimization',
-    'Artificial Intelligence',
-    'Natural Language Processing',
-    'Deep Learning',
-    'DevOps',
-    'Network Security',
-    'Case-Base Reasoning for Design Patterns Retrieval',
-    'Case-Base Reasoning',
-    'Information Retrieval',
-    'Computer Network Architectures',
-    'Algorithms and Protocols',
-    'Database Application and Design',
-    'Data Warehouse and Application',
-    'Enterprise Application Programing and Design',
-    'System Analysis and Design',
-    'Knowledge and Information Engineering',
-    'KM',
-    'Visualization',
-    'Pattern Recognition',
-    'Cognitive',
-    'Emotional Analysis and Behaviour',
-    'Data Analysis',
-    'Computer Aided Diagnosis',
-    'Multimedia Retrieval',
-    'Web/Internet Technology',
-    'Web Programming / Technology',
-    'Business Intelligence',
-    'Multimedia Content Analysis',
-    'Data Analytics',
-    'Speech Processing',
-    'Digital System Design',
-    'Memory Architecture',
-    'Embedded System',
-    'Microarchitecture Design Techniques',
+
   ];
+
 
   @override
   void initState() {
     super.initState();
+    fetchAllExpertise().then((expertiseList) {
+      setState(() {
+        expertiseitems.addAll(expertiseList);
+      });
+    }).catchError((error) {
+      print('Error fetching expertise: $error');
+    });
   }
 
   @override
@@ -97,6 +66,17 @@ class SearchPerson extends State<MySearchPage> {
               Navigator.pop(context);
             },
           ),
+          actions: [
+            IconButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                  settings: RouteSettings(),
+                ),
+              );
+            }, icon: Icon(Icons.home,color: Colors.white,size: 40,))
+          ],
         ),
         resizeToAvoidBottomInset: false,
         body: Stack(children: [

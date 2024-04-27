@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:final_project_research/models/expertise.dart';
+import 'package:final_project_research/screens/home_page.dart';
 import 'package:final_project_research/screens/result_search_p.dart';
 import 'package:final_project_research/screens/result_search_r.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,6 +55,17 @@ class SearchResearch extends State<SearchResearchPage> {
               Navigator.pop(context);
             },
           ),
+          actions: [
+            IconButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                  settings: RouteSettings(),
+                ),
+              );
+            }, icon: Icon(Icons.home,color: Colors.white,size: 40,))
+          ],
         ),
         resizeToAvoidBottomInset: false,
         body: Stack(children: [
@@ -96,6 +108,10 @@ class SearchResearch extends State<SearchResearchPage> {
                   ),
                 ),
                 Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 4, 16, 8),
+                  child: Text('* ไม่รองรับตัวอักษรพิเศษ',style: GoogleFonts.getFont('Prompt', fontSize: 14, color: Colors.red,),),
+                ),
+                Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Text('ชื่อนักวิจัยที่เกี่ยวข้อง',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
@@ -120,6 +136,10 @@ class SearchResearch extends State<SearchResearchPage> {
                       ),
                     ),
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 4, 16, 8),
+                  child: Text('* ไม่รองรับตัวอักษรพิเศษ',style: GoogleFonts.getFont('Prompt', fontSize: 14, color: Colors.red,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
@@ -208,7 +228,7 @@ class SearchResearch extends State<SearchResearchPage> {
                           String? yearValue = yearvalue;
 
                           // เช็คว่าชื่องานวิจัยมีตัวอักษรพิเศษหรือไม่
-                          if (searchText.contains(RegExp(r'[!@#$%^&*(),?":{}|<>]'))) {
+                          if (searchText.contains(RegExp(r'[!@#$%^&*(),?":{}|<>]')) || searchFromPerson.contains(RegExp(r'[!@#$%^&*(),?":{}|<>]'))) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -216,7 +236,7 @@ class SearchResearch extends State<SearchResearchPage> {
                                   title: Text('ข้อผิดพลาด',style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.red)),
                                   content: Container(
                                       height: 60,
-                                      child: Text('ชื่องานวิจัยไม่ควรมีอักษรพิเศษ',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black))
+                                      child: Text('โปรดตรวจสอบชื่องานวิจัยและชื่อนักวิจัยไม่ควรมีอักษรพิเศษ',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black))
                                   ),
                                   actions: [
                                     OutlinedButton(

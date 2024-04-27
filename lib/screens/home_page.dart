@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required String title});
+  const MyHomePage({super.key,});
 
   @override
   Widget build(BuildContext context) {

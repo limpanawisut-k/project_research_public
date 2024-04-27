@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:final_project_research/models/persons.dart';
 import 'package:final_project_research/models/research.dart';
 import 'package:final_project_research/screens/detail_person.dart';
+import 'package:final_project_research/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -80,6 +81,17 @@ class _RelationAuthorState extends State<RelationAuthor> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyHomePage(),
+                settings: RouteSettings(),
+              ),
+            );
+          }, icon: Icon(Icons.home,color: Colors.white,size: 40,))
+        ],
       ),
       resizeToAvoidBottomInset: false,
       body: FutureBuilder<List<Research>>(

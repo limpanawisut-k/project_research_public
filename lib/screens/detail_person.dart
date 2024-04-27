@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:final_project_research/models/degree.dart';
 import 'package:final_project_research/models/expertise.dart';
 import 'package:final_project_research/models/persons.dart';
+import 'package:final_project_research/screens/home_page.dart';
 import 'package:final_project_research/screens/relation_author.dart';
 import 'package:final_project_research/screens/result_search_r.dart';
 import 'package:final_project_research/screens/search_person.dart';
@@ -71,6 +72,17 @@ class _ResultExpertise extends State<DetailPerson> {
               Navigator.pop(context);
             },
           ),
+          actions: [
+            IconButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                  settings: RouteSettings(),
+                ),
+              );
+            }, icon: Icon(Icons.home,color: Colors.white,size: 40,))
+          ],
         ),
         resizeToAvoidBottomInset: false,
         body: Stack(

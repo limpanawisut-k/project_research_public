@@ -5,7 +5,9 @@ import 'package:final_project_research/models/research.dart';
 import 'package:final_project_research/models/todo_item.dart';
 import 'package:final_project_research/screens/detail_person.dart';
 import 'package:final_project_research/screens/detail_research.dart';
+import 'package:final_project_research/screens/home_page.dart';
 import 'package:final_project_research/screens/search_person.dart';
+import 'package:final_project_research/screens/search_research.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -65,6 +67,17 @@ class _ResultSearchR extends State<ResultSearchR> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyHomePage(),
+                settings: RouteSettings(),
+              ),
+            );
+          }, icon: Icon(Icons.home,color: Colors.white,size: 40,))
+        ],
       ),
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -78,7 +91,50 @@ class _ResultSearchR extends State<ResultSearchR> {
                   alignment: Alignment.center,
                 );
               } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(image: AssetImage('assets/pictures/not_found.png'),
+                          width: 150, // กำหนดความกว้างของรูปภาพ
+                          height: 150, ),
+                        Text(
+                          "ไม่พบข้อมูล",
+                          style: GoogleFonts.getFont('Prompt', fontSize: 24, color: Colors.red),
+                        ),
+                        SizedBox(height: 20,),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(0, 0, 0,0),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.indigo,
+                                fixedSize: Size(180, 50)
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SearchResearchPage(),
+                                  settings: RouteSettings(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              child: Text(
+                                'กลับไปยังหน้าค้นหา',
+                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.white,),
+                              ),
+                            ),
+                          ),
+                        ),
+                        /*Text('ไม่พบข้อมูล: ${snapshot.error}'),*/
+                      ],
+                    ),
+                  ],
+                );
               } else {
                 List<Research> research = snapshot.data!;
                 research.sort((a, b) => b.publication_year.compareTo(a.publication_year));
