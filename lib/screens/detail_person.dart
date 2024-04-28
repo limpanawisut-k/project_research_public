@@ -9,9 +9,12 @@ import 'package:final_project_research/screens/relation_author.dart';
 import 'package:final_project_research/screens/result_search_r.dart';
 import 'package:final_project_research/screens/search_person.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class DetailPerson extends StatefulWidget {
   final Person person;
@@ -114,11 +117,7 @@ class _ResultExpertise extends State<DetailPerson> {
                                     if (person.pic_name == "ไม่มีข้อมูล")
                                       CircleAvatar(
                                         radius: 60, // ขนาดของวงกลม
-                                        child: Icon(
-                                          Icons.person,
-                                          color: Colors.white, // สีไอคอน
-                                          size: 40, // ขนาดไอคอน
-                                        ),
+                                        backgroundImage: AssetImage('assets/pictures/person_icon.png'),
                                       )
                                     else
                                       CircleAvatar(
@@ -367,10 +366,20 @@ class _ResultExpertise extends State<DetailPerson> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                "${person.authorUrl}",
-                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
-                                textAlign: TextAlign.start,
+                              GestureDetector(
+                                onTap: () {
+                                  _launchURL(person.authorUrl); // เรียกใช้งานฟังก์ชั่นเมื่อคลิกที่ Hyperlink Text
+                                },
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: "${person.authorUrl}",
+                                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.blue),
+                                    recognizer: TapGestureRecognizer()..onTap = () {
+                                      _launchURL(person.authorUrl);
+                                    },
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
                               ),
                             ],
                           ),
@@ -642,5 +651,13 @@ class _ResultExpertise extends State<DetailPerson> {
 
 
             ]));
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url'; // โปรดระวังเปิด URL ไม่ได้
+    }
   }
 }

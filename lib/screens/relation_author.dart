@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:final_project_research/models/persons.dart';
 import 'package:final_project_research/models/research.dart';
 import 'package:final_project_research/screens/detail_person.dart';
+import 'package:final_project_research/screens/detail_research.dart';
 import 'package:final_project_research/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -130,19 +131,66 @@ class _RelationAuthorState extends State<RelationAuthor> {
                                   List<Research> articles = articleSnapshot.data!;
                                   return Column(
                                     children: [
-                                      ListTile(
-                                        tileColor: Color.fromRGBO(240, 240, 240, 1),
-                                        shape: RoundedRectangleBorder(
-                                          /*side: BorderSide(width: 1),*/
-                                          borderRadius: BorderRadius.circular(20),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ListTile(
+                                          tileColor: Color.fromRGBO(240, 240, 240, 1),
+                                          shape: RoundedRectangleBorder(
+                                            /*side: BorderSide(width: 1),*/
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                          title: Row(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  if (person.pic_name == "ไม่มีข้อมูล")
+                                                    CircleAvatar(
+                                                      radius: 40,
+                                                      backgroundImage: AssetImage('assets/pictures/person_icon.png'),
+                                                    )
+                                                  else
+                                                    CircleAvatar(
+                                                      radius: 40,
+                                                      backgroundImage: NetworkImage(person.pic_name),
+                                                    ),
+                                                ],
+                                              ),
+                                              SizedBox(width: 10,),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      person.full_name,
+                                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                                    ),
+                                                    Text(
+                                                      person.name_th,
+                                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                                    ),
+                                                    Text(
+                                                      "${person.office} ${person.province}",
+                                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  Icon(
+                                                    Icons.search,
+                                                    size: 30.0,
+                                                    color: Colors.black,
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          onTap: () {
+                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailPerson(person: person)));
+                                          },
                                         ),
-                                        title: Text(
-                                          person.full_name,
-                                          style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
-                                        ),
-                                        onTap: () {
-                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailPerson(person: person)));
-                                        },
                                       ),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,32 +199,27 @@ class _RelationAuthorState extends State<RelationAuthor> {
                                             'งานวิจัยที่ทำร่วมกัน',
                                             style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
                                           ),
-                                          Text(
-                                            'ชื่องานวิจัย 1',
-                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
-                                          ),
-                                          Text(
-                                            'ชื่องานวิจัย 2',
-                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
-                                          ),
-                                          Text(
-                                            'ชื่องานวิจัย 3',
-                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
-                                          ),
                                         ],
                                       ),
-                                      /*Column(
+                                      Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: articles.map((article) {
                                           return Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                            child: Text(
-                                              article.title,
-                                              style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                            padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 8.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailResearch(research: article)));
+                                              },
+                                              child: Text(
+                                                article.title,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                              ),
                                             ),
                                           );
                                         }).toList(),
-                                      ),*/
+                                      ),
                                       Divider(), // Add a divider between each person's articles
                                     ],
                                   );
