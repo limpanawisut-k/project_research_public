@@ -164,15 +164,44 @@ class _RelationAuthorState extends State<RelationAuthor> {
                                                       person.full_name,
                                                       style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
                                                     ),
-                                                    Text(
-                                                      person.name_th,
-                                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                                    if(person.name_th != 'ไม่พบชื่อภาษาไทย')
+                                                      Text(
+                                                        person.name_th,
+                                                        style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                                      )
+                                                    else
+                                                      Text(
+                                                        "ชื่อ: - ",
+                                                        style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                                      )
+                                                    ,
+                                                    Row(
+                                                      children: [
+                                                        if(person.office != '-')
+                                                          Text(
+                                                            person.office,
+                                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                                          )
+                                                        else
+                                                          Text(
+                                                            "หน่วยงาน: - ",
+                                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                                          )
+                                                        ,
+                                                        if(person.province != '-')
+                                                          Text(
+                                                            " ${person.province}",
+                                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                                          )
+                                                        else
+                                                          Text(
+                                                            "จังหวัด: - ",
+                                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                                          )
+                                                        ,
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      "${person.office} ${person.province}",
-                                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
-                                                    ),
-                                                  ],
+                                                  ]
                                                 ),
                                               ),
                                               Column(
@@ -192,35 +221,59 @@ class _RelationAuthorState extends State<RelationAuthor> {
                                           },
                                         ),
                                       ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'งานวิจัยที่ทำร่วมกัน',
-                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
-                                          ),
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'งานวิจัยที่ทำร่วมกัน',
+                                              style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: articles.map((article) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 8.0),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailResearch(research: article)));
-                                              },
-                                              child: Text(
-                                                article.title,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                          return Row(
+                                            children: [
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.fromLTRB(32, 0, 8, 8),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailResearch(research: article)));
+                                                    },
+                                                    child: Text(
+                                                      article.title,
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo,),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              Padding(
+                                                padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailResearch(research: article)));
+                                                  },
+                                                  child: Icon(
+                                                      Icons.arrow_forward),
+                                                ),
+                                              ),
+                                            ],
                                           );
                                         }).toList(),
                                       ),
-                                      Divider(), // Add a divider between each person's articles
+                                      Divider(
+                                        color: Colors.grey, // สีของเส้น
+                                        thickness: 1, // ความหนาของเส้น
+                                        indent: 0, // ระยะห่างด้านซ้ายของเส้น
+                                        endIndent: 4, // ระยะห่างด้านขวาของเส้น
+                                      ), // Add a divider between each person's articles
                                     ],
                                   );
                                 }

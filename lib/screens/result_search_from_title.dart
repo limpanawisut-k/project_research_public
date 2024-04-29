@@ -116,13 +116,42 @@ class _ResultSearchTitle extends State<ResultSearchTitle> {
                                     person[index].full_name,
                                     style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
                                   ),
-                                  Text(
-                                    person[index].name_th,
-                                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
-                                  ),
-                                  Text(
-                                    "${person[index].office} ${person[index].province}",
-                                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                  if(person[index].name_th != 'ไม่พบชื่อภาษาไทย')
+                                    Text(
+                                      person[index].name_th,
+                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                    )
+                                  else
+                                    Text(
+                                      "ชื่อ: - ",
+                                      style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                    )
+                                  ,
+                                  Row(
+                                    children: [
+                                      if(person[index].office != '-')
+                                        Text(
+                                          person[index].office,
+                                          style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                        )
+                                      else
+                                        Text(
+                                          "หน่วยงาน: - ",
+                                          style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                        )
+                                      ,
+                                      if(person[index].province != '-')
+                                        Text(
+                                          " ${person[index].province}",
+                                          style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                        )
+                                      else
+                                        Text(
+                                          "จังหวัด: - ",
+                                          style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                        )
+                                      ,
+                                    ],
                                   ),
                                 ],
                               ),

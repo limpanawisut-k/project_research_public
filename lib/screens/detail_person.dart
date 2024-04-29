@@ -420,12 +420,17 @@ class _ResultExpertise extends State<DetailPerson> {
                                       alignment: Alignment.center,
                                     );
                                   } else if (snapshot.hasError) {
-                                    return Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
-                                      child: Text(
-                                        "ไม่พบวุฒิการศึกษา",
-                                        style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
-                                      ),
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+                                          child: Text(
+                                            "ไม่พบวุฒิการศึกษา",
+                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                          ),
+                                        ),
+                                      ],
                                     );
                                   } else {
                                     List<Degree> degree = snapshot.data!;
@@ -496,12 +501,17 @@ class _ResultExpertise extends State<DetailPerson> {
                                       alignment: Alignment.center,
                                     );
                                   } else if (snapshot.hasError) {
-                                    return Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
-                                      child: Text(
-                                        "ไม่พบสาขาความเชี่ยวชาญ",
-                                        style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
-                                      ),
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+                                          child: Text(
+                                            "ไม่พบสาขาความเชี่ยวชาญ",
+                                            style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                          ),
+                                        ),
+                                      ],
                                     );
                                   } else {
                                     List<Expertise> expertise = snapshot.data!;

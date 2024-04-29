@@ -23,14 +23,14 @@ class Person {
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
       id: json['n']['id'] ?? 'ไม่มีข้อมูล' ,
-      full_name: json['n']['full_name'] ?? 'ไม่มีข้อมูล' ,
+      full_name: json['n']['full_name'] ?? '-' ,
       name_th: json['n']['name_th'] ?? 'ไม่พบชื่อภาษาไทย' ,
-      email: json['n']['email'] ?? 'ไม่มีข้อมูล' ,
-      website: json['n']['website'] ?? 'ไม่มีข้อมูล' ,
-      authorUrl: json['n']['authorUrl'] ?? 'ไม่มีข้อมูล',
-      office: json['n']['office'] ?? 'ไม่มีข้อมูล',
-      province: json['n']['province'] ?? 'ไม่มีข้อมูล',
-      country: json['n']['country'] ?? 'ไม่มีข้อมูล',
+      email: json['n']['email'] ?? '-' ,
+      website: json['n']['website'] ?? '-' ,
+      authorUrl: json['n']['authorUrl'] ?? '-',
+      office: json['n']['office'] ?? '-',
+      province: json['n']['province'] ?? '-',
+      country: json['n']['country'] ?? '-',
       pic_name: json['n']['pic_name'] ?? 'ไม่มีข้อมูล',
       );
   }
