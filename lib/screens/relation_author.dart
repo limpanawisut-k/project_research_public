@@ -255,7 +255,7 @@ class _RelationAuthorState extends State<RelationAuthor> {
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                                padding: const EdgeInsets.fromLTRB(0, 0, 32, 0),
                                                 child: GestureDetector(
                                                   onTap: () {
                                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailResearch(research: article)));

@@ -331,10 +331,20 @@ class _ResultExpertise extends State<DetailPerson> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "${person.website}",
-                                style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
-                                textAlign: TextAlign.start,
+                              GestureDetector(
+                                onTap: () {
+                                  _launchURL(person.website); // เรียกใช้งานฟังก์ชั่นเมื่อคลิกที่ Hyperlink Text
+                                },
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: "${person.website}",
+                                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.blue),
+                                    recognizer: TapGestureRecognizer()..onTap = () {
+                                      _launchURL(person.website);
+                                    },
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
                               ),
                             ],
                           ),
