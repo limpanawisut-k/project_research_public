@@ -440,6 +440,7 @@ class _ResultExpertise extends State<DetailPerson> {
                                       itemCount: degree.length,
                                       itemBuilder: (context, index) {
                                         return Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
