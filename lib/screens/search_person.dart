@@ -10,6 +10,8 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
+import 'constant.dart';
+
 class MySearchPage extends StatefulWidget {
   @override
   SearchPerson createState() => SearchPerson();
@@ -17,7 +19,7 @@ class MySearchPage extends StatefulWidget {
 
 class SearchPerson extends State<MySearchPage> {
   Future<List<String>> fetchAllExpertise() async {
-    final response = await Dio().get('http://10.0.2.2:8000/all_expertise');
+    final response = await Dio().get('${Constants.apiUrl}/all_expertise');
     debugPrint(response.data.toString());
 
     if (response.statusCode == 200 ) {

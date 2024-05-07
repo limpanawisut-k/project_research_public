@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:final_project_research/models/degree.dart';
@@ -15,6 +16,8 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'constant.dart';
+
 class DetailResearch extends StatefulWidget {
   final Research research;
   const DetailResearch({Key? key, required this.research}) : super(key: key);
@@ -26,7 +29,7 @@ class DetailResearch extends StatefulWidget {
 class _ResultDetail extends State<DetailResearch> {
   final _dio = Dio(BaseOptions(responseType: ResponseType.plain));
   Future<List<Degree>> fetchDataDegree(String search) async {
-    final response = await Dio().get('http://10.0.2.2:8000/search_degree/$search');
+    final response = await Dio().get('${Constants.apiUrl}/search_degree/$search');
     debugPrint(response.data.toString());
 
     if (response.statusCode == 200 ) {
@@ -184,6 +187,73 @@ class _ResultDetail extends State<DetailResearch> {
                                       textAlign: TextAlign.start,
                                     ),
                               ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  "บทนำ :",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.indigo),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
+                                child: Text(
+                                  "${research.abstract.substring(0, min(research.abstract.length, 3 * 30))}${research.abstract.length > 3 * 30 ? '...' : ''}",
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              if (research.abstract.length > 3 * 15) // 3 lines * 15 characters per line
+                                TextButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor: Colors.white,
+                                          title: Text("บทนำ",style: GoogleFonts.getFont('Prompt', color: Colors.indigo),),
+                                          content: SingleChildScrollView(
+                                            child: Text(
+                                              research.abstract,
+                                              style: TextStyle(fontSize: 16.0),
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("ปิด",style: GoogleFonts.getFont('Prompt', color: Colors.indigo),),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Text("ดูเพิ่มเติม",style: GoogleFonts.getFont('Prompt', color: Colors.indigo),),
+                                ),
                             ],
                           ),
                         ),

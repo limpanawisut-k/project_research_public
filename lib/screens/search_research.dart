@@ -113,7 +113,7 @@ class SearchResearch extends State<SearchResearchPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('ชื่อนักวิจัยที่เกี่ยวข้อง',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                  child: Text('ชื่อนักวิจัยร่วม',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),

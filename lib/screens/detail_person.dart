@@ -15,6 +15,8 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'constant.dart';
+
 
 class DetailPerson extends StatefulWidget {
   final Person person;
@@ -29,7 +31,7 @@ class _ResultExpertise extends State<DetailPerson> {
 
 
   Future<List<Expertise>> fetchData(String search) async {
-    final response = await Dio().get('http://10.0.2.2:8000/search_expertise/$search');
+    final response = await Dio().get('${Constants.apiUrl}/search_expertise/$search');
     debugPrint(response.data.toString());
 
     if (response.statusCode == 200 ) {
@@ -40,7 +42,7 @@ class _ResultExpertise extends State<DetailPerson> {
     }
   }
   Future<List<Degree>> fetchDataDegree(String search) async {
-    final response = await Dio().get('http://10.0.2.2:8000/search_degree/$search');
+    final response = await Dio().get('${Constants.apiUrl}/search_degree/$search');
     debugPrint(response.data.toString());
 
     if (response.statusCode == 200 ) {

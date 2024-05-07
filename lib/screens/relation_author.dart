@@ -8,6 +8,8 @@ import 'package:final_project_research/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'constant.dart';
+
 class RelationAuthor extends StatefulWidget {
   const RelationAuthor({Key? key}) : super(key: key);
 
@@ -20,7 +22,7 @@ class _RelationAuthorState extends State<RelationAuthor> {
   Map<String, dynamic>? list;
 
   Future<List<Research>> fetchData(String search, String searchfromperson, String type, String publisher, String year) async {
-    final response = await Dio().get('http://10.0.2.2:8000/search/research',
+    final response = await Dio().get('${Constants.apiUrl}/search/research',
       queryParameters: {'search': search, 'searchfromperson': searchfromperson, 'type': type, 'publisher': publisher, 'year': year},);
     debugPrint(response.data.toString());
 
@@ -33,7 +35,7 @@ class _RelationAuthorState extends State<RelationAuthor> {
   }
 
   Future<List<Person>> fetchDataRelation(String search) async {
-    final response = await Dio().get('http://10.0.2.2:8000/search_person_from_title',
+    final response = await Dio().get('${Constants.apiUrl}/search_person_from_title',
         queryParameters: {'searchFromTitle': search});
     debugPrint(response.data.toString());
 
@@ -46,7 +48,7 @@ class _RelationAuthorState extends State<RelationAuthor> {
   }
 
   Future<List<Research>> fetchDataArticleRelation(String author1, String author2) async {
-    final response = await Dio().get('http://10.0.2.2:8000/find_articles_relation',
+    final response = await Dio().get('${Constants.apiUrl}/find_articles_relation',
       queryParameters: {'Author1': author1, 'Author2': author2},);
     debugPrint(response.data.toString());
 

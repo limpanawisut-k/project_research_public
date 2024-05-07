@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'constant.dart';
+
 class ResultSearchP extends StatefulWidget {
   const ResultSearchP({Key? key}) : super(key: key);
 
@@ -24,7 +26,7 @@ class _ResultSearchP extends State<ResultSearchP> {
   bool _hasError = false;
 
   Future<List<Person>> fetchData(String search, String office, String expertise) async {
-    final response = await Dio().get('http://10.0.2.2:8000/search/filter',
+    final response = await Dio().get('${Constants.apiUrl}/search/filter',
       queryParameters: {'search': search,'office': office, 'expertise': expertise},);
     debugPrint(response.data.toString());
 

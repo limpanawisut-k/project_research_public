@@ -1,5 +1,6 @@
 class Research {
   final String abstract_url;
+  final String abstract;
   final String article_number;
   final String content_type;
   final String doi;
@@ -10,7 +11,7 @@ class Research {
   final String start_page;
   final String title;
 
-  Research({required this.abstract_url ,required this.article_number, required this.content_type
+  Research({required this.abstract_url ,required this.abstract ,required this.article_number, required this.content_type
     ,  required this.doi
     ,  required this.end_page
     ,  required this.publication_title
@@ -23,6 +24,7 @@ class Research {
   factory Research.fromJson(Map<String, dynamic> json) {
     return Research(
       abstract_url: json['research']['abstract_url'].toString() ?? 'ไม่มีข้อมูล' ,
+      abstract: json['research']['abstract'].toString() ?? 'ไม่มีข้อมูล' ,
       article_number: json['research']['article_number'].toString() ?? 'ไม่มีข้อมูล' ,
       content_type: json['research']['content_type'].toString() ?? 'ไม่มีข้อมูล' ,
       doi: json['research']['doi'].toString() ?? 'ไม่มีข้อมูล' ,
