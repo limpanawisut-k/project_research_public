@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:final_project_research/models/expertise.dart';
+import 'package:final_project_research/models/persons.dart';
+import 'package:final_project_research/screens/constant.dart';
 import 'package:final_project_research/screens/home_page.dart';
 import 'package:final_project_research/screens/result_search_p.dart';
 import 'package:final_project_research/screens/result_search_r.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchResearchPage extends StatefulWidget {
@@ -16,8 +19,48 @@ class SearchResearchPage extends StatefulWidget {
 }
 
 class SearchResearch extends State<SearchResearchPage> {
+  Future<List<String>> fetchAllFullName() async {
+    final response = await Dio().get('${Constants.apiUrl}/search');
+    debugPrint(response.data.toString());
+
+    if (response.statusCode == 200 ) {
+      List<dynamic> data = response.data;
+      List<String> fullNames = data.map((item) => Person.fromJson(item).full_name).toList();
+      return fullNames;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<List<String>> fetchAllNameTH() async {
+    final response = await Dio().get('${Constants.apiUrl}/search');
+    debugPrint(response.data.toString());
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = response.data;
+      List<String> thNames = data.map((item) {
+        String name = Person.fromJson(item).name_th;
+        List<String> prefixes = ["ผศ.ดร.", "รศ.ดร.", "ดร.", "ผศ."];
+
+        for (String prefix in prefixes) {
+          if (name.startsWith(prefix)) {
+            name = name.replaceFirst(prefix, "").trim();
+            break;
+          }
+        }
+
+        return name;
+      }).toList();
+      thNames.removeWhere((name) => name == "ไม่พบชื่อภาษาไทย");
+      return thNames;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   TextEditingController _searchController = TextEditingController();
   TextEditingController _searchFromPerson = TextEditingController();
+  List<String> nameitems = [];
   String? typevalue = '---เลือกประเภทงานวิจัย---';
   List typeitems = [
     '---เลือกประเภทงานวิจัย---',
@@ -38,9 +81,32 @@ class SearchResearch extends State<SearchResearchPage> {
 
   ];
 
+  List<String> getSuggestions(String query) {
+    List<String> matches = [];
+    matches.addAll(nameitems);
+    matches.retainWhere((s) => s.toLowerCase().startsWith(query.toLowerCase()));
+    matches.sort();
+    return matches;
+  }
+
   @override
   void initState() {
     super.initState();
+    fetchAllFullName().then((fullnameList) {
+      setState(() {
+        nameitems.addAll(fullnameList);
+      });
+    }).catchError((error) {
+      print('Error fetching expertise: $error');
+    });
+
+    fetchAllNameTH().then((fullnameList) {
+      setState(() {
+        nameitems.addAll(fullnameList);
+      });
+    }).catchError((error) {
+      print('Error fetching expertise: $error');
+    });
   }
 
   @override
@@ -83,7 +149,7 @@ class SearchResearch extends State<SearchResearchPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text('ชื่องานวิจัย',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                  child: Text('ชื่อหรือคำสำคัญของงานวิจัย',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -91,7 +157,7 @@ class SearchResearch extends State<SearchResearchPage> {
                     style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
                     controller: _searchController,
                     decoration: InputDecoration(
-                      hintText: 'ป้อนชื่องานวิจัย',
+                      hintText: 'ป้อนชื่อหรือคำสำคัญของงานวิจัย',
                       filled: true,
                       fillColor: Colors.white, // สีพื้นหลัง
                       enabledBorder: OutlineInputBorder(
@@ -107,40 +173,58 @@ class SearchResearch extends State<SearchResearchPage> {
                     ),
                   ),
                 ),
-                Padding(
+                /*Padding(
                   padding: const EdgeInsets.fromLTRB(24, 4, 16, 8),
                   child: Text('* ไม่รองรับตัวอักษรพิเศษ',style: GoogleFonts.getFont('Prompt', fontSize: 14, color: Colors.red,),),
-                ),
+                ),*/
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Text('ชื่อนักวิจัยร่วม',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: TextField(
-                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
-                    controller: _searchFromPerson,
-                    decoration: InputDecoration(
-                      hintText: 'ป้อนชื่อนักวิจัยที่เกี่ยวข้อง',
-                      filled: true,
-                      fillColor: Colors.white, // สีพื้นหลัง
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black, // สีขอบเมื่อไม่ได้รับภายนอก
+                  child: SingleChildScrollView(
+                    child: TypeAheadField(
+                      textFieldConfiguration: TextFieldConfiguration(
+                        style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
+                        controller: _searchFromPerson,
+                        decoration: InputDecoration(
+                          hintText: 'รองรับทั้งภาษาไทยและภาษาอังกฤษ',
+                          filled: true,
+                          fillColor: Colors.white, // สีพื้นหลัง
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black, // สีขอบเมื่อไม่ได้รับภายนอก
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.indigo, // สีขอบเมื่อได้รับภายนอก
+                            ),
+                          ),
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.indigo, // สีขอบเมื่อได้รับภายนอก
-                        ),
-                      ),
+                      suggestionsCallback: (pattern) async {
+                        return getSuggestions(pattern);
+                      },
+                      noItemsFoundBuilder: (BuildContext context) {
+                        return SizedBox.shrink(); // ไม่มีการแสดงผลเมื่อไม่มีรายการที่พบ
+                      },
+                      itemBuilder: (context, suggestion) {
+                        return ListTile(
+                          title: Text(suggestion,style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                        );
+                      },
+                      onSuggestionSelected: (suggestion) {
+                        _searchFromPerson.text = suggestion;
+                      },
                     ),
                   ),
                 ),
-                Padding(
+                /*Padding(
                   padding: const EdgeInsets.fromLTRB(24, 4, 16, 8),
                   child: Text('* ไม่รองรับตัวอักษรพิเศษ',style: GoogleFonts.getFont('Prompt', fontSize: 14, color: Colors.red,),),
-                ),
+                ),*/
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Text('แหล่งที่เผยแพร่',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),

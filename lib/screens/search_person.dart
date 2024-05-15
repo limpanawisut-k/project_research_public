@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:final_project_research/models/expertise.dart';
+import 'package:final_project_research/models/persons.dart';
 import 'package:final_project_research/screens/home_page.dart';
 import 'package:final_project_research/screens/result_search_p.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'constant.dart';
@@ -31,7 +33,49 @@ class SearchPerson extends State<MySearchPage> {
     }
   }
 
+  Future<List<String>> fetchAllFullName() async {
+    final response = await Dio().get('${Constants.apiUrl}/search');
+    debugPrint(response.data.toString());
+
+    if (response.statusCode == 200 ) {
+      List<dynamic> data = response.data;
+      List<String> fullNames = data.map((item) => Person.fromJson(item).full_name).toList();
+      return fullNames;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<List<String>> fetchAllNameTH() async {
+    final response = await Dio().get('${Constants.apiUrl}/search');
+    debugPrint(response.data.toString());
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = response.data;
+      List<String> thNames = data.map((item) {
+        String name = Person.fromJson(item).name_th;
+        List<String> prefixes = ["ผศ.ดร.", "รศ.ดร.", "ดร.", "ผศ."];
+
+        for (String prefix in prefixes) {
+          if (name.startsWith(prefix)) {
+            name = name.replaceFirst(prefix, "").trim();
+            break;
+          }
+        }
+
+        return name;
+      }).toList();
+      thNames.removeWhere((name) => name == "ไม่พบชื่อภาษาไทย");
+      return thNames;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+
+
   TextEditingController _searchController = TextEditingController();
+  List<String> nameitems = [];
   String? officevalue = '---เลือกหน่วยงานหรือสังกัด---';
   List officeitems = [
     '---เลือกหน่วยงานหรือสังกัด---',
@@ -43,6 +87,14 @@ class SearchPerson extends State<MySearchPage> {
 
   ];
 
+  List<String> getSuggestions(String query) {
+    List<String> matches = [];
+    matches.addAll(nameitems);
+    matches.retainWhere((s) => s.toLowerCase().startsWith(query.toLowerCase()));
+    matches.sort();
+    return matches;
+  }
+
 
   @override
   void initState() {
@@ -50,6 +102,22 @@ class SearchPerson extends State<MySearchPage> {
     fetchAllExpertise().then((expertiseList) {
       setState(() {
         expertiseitems.addAll(expertiseList);
+      });
+    }).catchError((error) {
+      print('Error fetching expertise: $error');
+    });
+
+    fetchAllFullName().then((fullnameList) {
+      setState(() {
+        nameitems.addAll(fullnameList);
+      });
+    }).catchError((error) {
+      print('Error fetching expertise: $error');
+    });
+
+    fetchAllNameTH().then((fullnameList) {
+      setState(() {
+        nameitems.addAll(fullnameList);
       });
     }).catchError((error) {
       print('Error fetching expertise: $error');
@@ -100,30 +168,48 @@ class SearchPerson extends State<MySearchPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: TextField(
-                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'รองรับทั้งภาษาไทยและภาษาอังกฤษ',
-                      filled: true,
-                      fillColor: Colors.white, // สีพื้นหลัง
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                        color: Colors.black, // สีขอบเมื่อไม่ได้รับภายนอก
+                  child: SingleChildScrollView(
+                    child: TypeAheadField(
+                      textFieldConfiguration: TextFieldConfiguration(
+                        style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'รองรับทั้งภาษาไทยและภาษาอังกฤษ',
+                          filled: true,
+                          fillColor: Colors.white, // สีพื้นหลัง
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black, // สีขอบเมื่อไม่ได้รับภายนอก
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.indigo, // สีขอบเมื่อได้รับภายนอก
+                            ),
+                          ),
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.indigo, // สีขอบเมื่อได้รับภายนอก
-                        ),
-                      ),
-                  ),
+                      suggestionsCallback: (pattern) async {
+                        return getSuggestions(pattern);
+                      },
+                      noItemsFoundBuilder: (BuildContext context) {
+                        return SizedBox.shrink(); // ไม่มีการแสดงผลเมื่อไม่มีรายการที่พบ
+                      },
+                      itemBuilder: (context, suggestion) {
+                        return ListTile(
+                          title: Text(suggestion,style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
+                        );
+                      },
+                      onSuggestionSelected: (suggestion) {
+                        _searchController.text = suggestion;
+                      },
+                    ),
                   ),
                 ),
-                Padding(
+                /*Padding(
                   padding: const EdgeInsets.fromLTRB(24, 4, 16, 8),
                   child: Text('* ไม่รองรับตัวอักษรพิเศษ',style: GoogleFonts.getFont('Prompt', fontSize: 14, color: Colors.red,),),
-                ),
+                ),*/
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Text('สาขาที่เชี่ยวชาญ',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black,),),
@@ -132,9 +218,9 @@ class SearchPerson extends State<MySearchPage> {
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1),
-                        color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(width: 1),
+                      color: Colors.white,
                     ),
                     child: DropdownButton(
                       padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
@@ -155,9 +241,9 @@ class SearchPerson extends State<MySearchPage> {
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1),
-                        color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(width: 1),
+                      color: Colors.white,
                     ),
                     child: DropdownButton(
                       padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
@@ -193,7 +279,7 @@ class SearchPerson extends State<MySearchPage> {
                                 return AlertDialog(
                                   title: Text('ข้อผิดพลาด',style: GoogleFonts.getFont('Prompt', fontSize: 20, color: Colors.red)),
                                   content: Container(
-                                    height: 60,
+                                      height: 60,
                                       child: Text('ชื่อและนามสกุลไม่ควรมีอักษรพิเศษ',style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.black))
                                   ),
                                   actions: [

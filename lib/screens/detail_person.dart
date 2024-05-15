@@ -334,20 +334,20 @@ class _ResultExpertise extends State<DetailPerson> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               GestureDetector(
-                                onTap: () {
-                                  _launchURL(person.website); // เรียกใช้งานฟังก์ชั่นเมื่อคลิกที่ Hyperlink Text
+                                onTap: () async {
+                                  String url = person.website;
+                                  if (await canLaunch(url)) {
+                                    await launch(url);
+                                  } else {
+                                    throw 'Could not launch $url';
+                                  }
                                 },
-                                child: Text.rich(
-                                  TextSpan(
-                                    text: "${person.website}",
-                                    style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.blue),
-                                    recognizer: TapGestureRecognizer()..onTap = () {
-                                      _launchURL(person.website);
-                                    },
-                                  ),
+                                child: Text(
+                                  '${person.website}',
+                                  style: GoogleFonts.getFont('Prompt', fontSize: 16, color: Colors.blue),
                                   textAlign: TextAlign.start,
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),

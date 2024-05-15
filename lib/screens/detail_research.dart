@@ -83,10 +83,11 @@ class _ResultDetail extends State<DetailResearch> {
               ),
               SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 20,),
                     Wrap(
-                      alignment: WrapAlignment.center,
+                      alignment: WrapAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -101,7 +102,7 @@ class _ResultDetail extends State<DetailResearch> {
                       ],
                     ),
                     Wrap(
-                      alignment: WrapAlignment.center,
+                      alignment: WrapAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
